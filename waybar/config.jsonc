@@ -1,0 +1,188 @@
+{
+    "layer": "top",
+    "position": "top",
+    "mode": "dock",
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "height": 25,
+    "spacing": 0,
+    "margin-top": 3,
+    "margin-bottom": 3,
+    "margin-left": 2,
+    "margin-right": 2,
+
+    // 1. Declare it in the layout array
+    "modules-left": [
+        "custom/music",
+        "custom/niri-taskbar"
+    ],
+
+    "custom/music": {
+    "exec": "~/.config/waybar/scripts/music/music",
+    "return-type": "json",  // <--- This is the magic line you need
+    "format": "{}",         // <--- Also make sure format is just {}
+    "interval": 2,
+    "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl next",
+    "on-click-middle": "playerctl previous",
+    "escape": false,
+    "max-length": 60
+},
+
+    "custom/niri-taskbar": {
+        "exec": "~/.config/waybar/scripts/taskbar/go-niri",
+        "return-type": "json",
+        "format": "{}",
+        "escape": false,
+        "tooltip": true
+    },
+    
+    "modules-center": [
+        "clock",
+    ],
+    "modules-right": [
+
+        "custom/timer",
+        "bluetooth",
+        "network",
+        "pulseaudio",
+        "backlight",
+        "memory",
+        "battery"
+    ],
+
+    "niri/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "active":  "●",
+            "default": "○",
+            "empty":   "○",
+            "urgent":  "●"
+        },
+        "on-click": "activate",
+        "all-outputs": false
+    },
+
+    "wlr/taskbar": {
+        "on-click": "activate",
+        "format": "{icon}",
+        "all-outputs": true,
+        "sort-by-name": true
+    },
+
+    "clock": {
+        "format": "{:L%A %H:%M}",
+        "format-alt": "{:L%d %B W%V %Y}",
+        "timezones": ["local"],
+        "on-click-middle": "date +'%Y-%m-%d %H:%M:%S' | wl-copy",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode"          : "year",
+            "mode-mon-col"  : 3,
+            "weeks-pos"     : "right",
+            "on-scroll"     : 1,
+            "format": {
+                "months":     "<span color='#ffead3'><b>{}</b></span>",
+                "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions":  {
+            "on-click-right": "mode",
+            "on-click-forward": "tz_up",
+            "on-click-backward": "tz_down",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+     "network": {
+"format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+"format": "{icon}",
+"format-wifi": "{icon} {essid}",
+"format-ethernet": "󰀂 eth",
+"format-disconnected": "󰤮 off",
+"tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes} ⇡{bandwidthUpBytes}",
+"tooltip-format-ethernet": "⇣{bandwidthDownBytes} ⇡{bandwidthUpBytes}",
+"tooltip-format-disconnected": "Disconnected",
+"interval": 3,
+"spacing": 1,
+"on-click": "ronema"
+},
+
+"bluetooth": {
+    "format": "󰂯",
+   "format-connected": "󰂱 {num_connections}",
+    "format-off": "󰂲",
+    "format-disabled": "󰂲",
+    "format-no-controller": "",
+    "tooltip-format": "Devices connected: {num_connections}\n{controller_alias}\t{controller_address}",
+    "tooltip-format-connected": "Devices connected: {num_connections}\n{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+    "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+    "on-click": "blueman-manager"
+},
+
+
+ "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "headset": "",
+            "default": ["", "", ""]
+        },
+        "tooltip-format": "Playing at {volume}%",
+        "scroll-step": 5,
+        "on-click": "pamixer -t",
+        "on-click-right": "pavucontrol"
+    },
+
+     "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["", "", "", "", "", "", "", "", ""],
+        "tooltip": false
+    } ,
+
+"memory": {
+    "interval": 10,
+    "format": "󰍛 {percentage}%",
+    "max-length": 10,
+    "tooltip": true,
+    "tooltip-format": "RAM: {used:0.1f}G / {total:0.1f}G",
+    "on-click": "ghostty -e btop"
+},
+
+"battery": {
+    "format": "{icon} {capacity}%",
+    "format-discharging": "{icon} {capacity}%",
+    "format-charging": "{icon} {capacity}%",
+    "format-plugged": " {capacity}%",
+    "format-icons": {
+        "charging": ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"],
+        "default": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
+    },
+    "format-full": "󰂅 full",
+    "tooltip-format-discharging": "{power:>1.0f}W↓ {capacity}%",
+    "tooltip-format-charging": "{power:>1.0f}W↑ {capacity}%",
+    "interval": 5,
+    "states": {
+        "good": 95,
+        "warning": 20,
+        "critical": 10
+    }
+},
+
+    "custom/timer": {
+        "exec": "~/.config/waybar/scripts/timer.sh",
+        "return-type": "json",
+        "format": "{}",
+        "on-click": "~/.config/waybar/scripts/timer.sh click",
+        "on-click-right": "~/.config/waybar/scripts/timer.sh right",
+        "on-click-middle": "~/.config/waybar/scripts/timer.sh middle",
+        "on-scroll-up": "~/.config/waybar/scripts/timer.sh down",
+        "on-scroll-down": "~/.config/waybar/scripts/timer.sh up",
+        "tooltip": true,
+        "escape": true
+    }
+}

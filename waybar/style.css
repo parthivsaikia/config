@@ -1,0 +1,227 @@
+/* ~/.config/waybar/style.css
+   Stealth Premium Minimalist Bar for niri
+*/
+
+/* ── Palette ──────────────────────────────────────────────────────── */
+@define-color base      #080808; /* Very dark charcoal, nearly black */
+@define-color crust     #000000;
+@define-color border    #555555; /* Subtle dark gray border */
+@define-color text      #e0e0e0; /* Soft off-white to reduce eye strain */
+@define-color highlight #ffffff; /* Pure white for active elements */
+@define-color subtext   #888888;
+@define-color dim       #444444;
+@define-color alert-bg  #ffffff;
+@define-color alert-fg  #000000;
+
+/* ── Global reset ─────────────────────────────────────────────────── */
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", monospace;
+  font-size: 13px;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+/* ── Bar window ───────────────────────────────────────────────────── */
+window#waybar {
+  background-color: transparent;
+  color: @text;
+}
+
+/* ── Taskbar ──────────────────────────────────────────────────────── */
+#taskbar {
+  padding: 0 4px;
+}
+
+#taskbar button {
+  padding: 0 6px;
+  background: transparent;
+  border-radius: 0px;
+  margin: 0 2px;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#taskbar button:hover {
+  background: @border;
+}
+
+#taskbar button.active {
+  background: @border;
+  box-shadow: inset 0 -2px 0 0 @highlight; /* Subtle white indicator line */
+}
+
+/* Dim inactive icons to preserve the dark aesthetic */
+#taskbar button img {
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+#taskbar button:hover img,
+#taskbar button.active img {
+  opacity: 1;
+}
+
+/* ── Individual pills for the left modules ──────────────────────────── */
+#custom-music,
+#custom-niri-taskbar {
+  background: @base;
+  border: 1px solid @border;
+  border-radius: 0px;
+  padding: 8px 12px;
+  margin: 2px 4px; /* The 4px horizontal margin naturally creates an 8px gap between them */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Pill wrapper for left/right groups ───────────────────────────── */
+.modules-right,
+.modules-center {
+  background: @base;
+  border: 1px solid @border;
+  border-radius: 0px; /* Slightly rounder to match the new thickness */
+  padding: 8px 12px; /* Increased vertical padding to 6px */
+  margin: 2px 4px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Generic module defaults ──────────────────────────────────────── */
+#workspaces,
+#window,
+#clock,
+#custom-timer,
+#bluetooth,
+#network,
+#pulseaudio,
+#backlight,
+#memory,
+#battery,
+#tray {
+  padding: 0 8px;
+  color: @text;
+}
+
+/* ── Workspaces ───────────────────────────────────────────────────── */
+#workspaces {
+  padding: 0 4px;
+}
+
+#workspaces button {
+  padding: 0 6px;
+  color: @dim;
+  background: transparent;
+  border-radius: 0px;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  min-width: 22px;
+}
+
+#workspaces button:hover {
+  color: @highlight;
+  background: @border;
+}
+
+#workspaces button.active {
+  color: @highlight;
+  font-size: 14px;
+  text-shadow: 0px 0px 5px rgba(255, 255, 255, 0.3);
+}
+
+#workspaces button.focused {
+  color: @highlight;
+}
+
+#workspaces button.urgent {
+  color: @alert-fg;
+  background-color: @alert-bg;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ── Window title ─────────────────────────────────────────────────── */
+#window {
+  color: @subtext;
+  font-size: 12px;
+  padding-left: 6px;
+}
+
+#window.empty {
+  opacity: 0;
+}
+
+/* ── Clock ────────────────────────────────────────────────────────── */
+#clock {
+  color: @highlight;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* ── Audio & Network & Bluetooth ──────────────────────────────────── */
+#pulseaudio.muted,
+#network.disconnected,
+#bluetooth.disabled {
+  color: @dim;
+}
+
+/* ── Battery & Memory Warnings ────────────────────────────────────── */
+#battery.charging,
+#battery.plugged {
+  color: @highlight;
+}
+
+#battery.warning:not(.charging),
+#memory.warning {
+  color: @alert-fg;
+  background-color: @alert-bg;
+  border-radius: 0px;
+  padding: 0 8px;
+}
+
+#battery.critical:not(.charging),
+#memory.critical {
+  color: @alert-fg;
+  background-color: @alert-bg;
+  border-radius: 0px;
+  padding: 0 8px;
+  animation: pulse 1s infinite;
+}
+
+/* ── Tray ─────────────────────────────────────────────────────────── */
+#tray {
+  padding-right: 2px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background-color: @alert-bg;
+  border-radius: 0px;
+}
+
+/* ── Tooltip ──────────────────────────────────────────────────────── */
+tooltip {
+  background: @base;
+  border: 1px solid @border;
+  border-radius: 0px;
+  color: @text;
+  font-size: 12px;
+  padding: 8px 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+tooltip label {
+  color: @text;
+}
