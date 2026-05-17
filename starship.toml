@@ -1,0 +1,56 @@
+# Commands may be slower in restricted environments, e.g. containers
+command_timeout = 10000
+# Left side only, right side removed
+format = "$sudo$username$hostname$directory$git_branch$git_commit$git_state$git_status$character"
+# Additional padding between newlines
+add_newline = true
+
+[character]
+vimcmd_symbol = "[NORMAL λ](bold #b9b9b9)"
+success_symbol = "[λ](bold #f7f7f7)"
+error_symbol = "[λ](bold #747474)"
+# Removed the \n to prevent extra space between commands
+format = "$symbol "
+
+### Left prompt
+[sudo]
+disabled = false
+symbol = "🧙"
+format = "[$symbol]($style)"
+
+[username]
+# Don't display for normal logged in user
+disabled = true
+style_user = "#d4d4d4"
+format = "[$user]($style)"
+
+[hostname]
+disabled = true
+ssh_only = true
+style = "#d4d4d4"
+format = "[@$hostname]($style) "
+
+[directory]
+read_only = " "
+truncation_length = 2
+truncate_to_repo = false
+repo_root_style = "#989898"
+fish_style_pwd_dir_length = 2
+style = "#d4d4d4"
+# Repo format
+repo_root_format = "[ $before_root_path]($style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+# Non repo format
+format = "[ $path]($style)[$read_only]($read_only_style) "
+
+[git_branch]
+symbol = "  "
+style = "#b9b9b9"
+format = "[$symbol$branch]($style)"
+
+[git_status]
+staged = "[+${count}](#f7f7f7) "
+modified = "[!${count}](#d4d4d4) "
+stashed = "[*${count}](#b9b9b9) "
+untracked = "[?${count}](#747474) "
+deleted = "[-${count}](#585858) "
+format = " ([$stashed$modified$staged$untracked $ahead_behind]($style))"
